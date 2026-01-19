@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx watch src/main.ts",
     "start": "node dist/main.js",
-    "build": "tsc && cp -r views dist/views && cp -r data dist/data"
+    "build": "tsc && mkdir -p dist/views dist/data && cp -r views dist/views && cp -r data dist/data"
   },
   "keywords": [],
   "author": "",

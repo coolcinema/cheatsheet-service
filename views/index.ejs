@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CoolCinema Cheatsheet</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+  <style>
+    :root {
+      --pico-spacing: 0.5rem; /* Compact mode */
+      --pico-font-size: 16px;
+    }
+    .container { max-width: 1400px; padding-top: 20px; }
+    .category-header { margin-top: 2rem; border-bottom: 1px solid #333; padding-bottom: 0.5rem; color: #81d4fa; }
+    
+    .card { 
+      background: #1e1e1e; 
+      border: 1px solid #333; 
+      border-radius: 8px;
+      height: 100%;
+    }
+    .card-header { 
+      background: #252525; 
+      padding: 10px 15px; 
+      border-bottom: 1px solid #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card-body { padding: 15px; }
+    
+    .cmd-row { 
+      margin-bottom: 15px; 
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #333;
+    }
+    .cmd-row:last-child { border-bottom: none; margin-bottom: 0; }
+    
+    .cmd-signature {
+      background: #000;
+      color: #a5d6a7; /* Bright Green */
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+      border: 1px solid #444;
+    }
+    .cmd-desc { font-size: 0.9em; color: #ccc; margin: 0; }
+    
+    .arg-list { font-size: 0.85em; color: #888; margin-top: 4px; padding-left: 10px; border-left: 2px solid #444; }
+    .arg-name { color: #ce93d8; font-weight: bold; } /* Purple */
+  </style>
+</head>
+<body>
+  <main class="container">
+    <hgroup>
+      <h1>📚 CoolCinema Cheatsheet</h1>
+      <p>Интерактивная справка по инструментам разработки</p>
+    </hgroup>
+
+    <% Object.keys(categories).forEach(category => { %>
+      <h3 class="category-header"><%= category %></h3>
+      <div class="grid">
+        <% categories[category].forEach(sheet => { %>
+          <article class="card">
+            <div class="card-header">
+              <strong><%= sheet.title %></strong>
+              <% if(sheet.docUrl) { %>
+                <a href="<%= sheet.docUrl %>" target="_blank" role="button" class="outline contrast" style="padding: 2px 8px; font-size: 0.7em;">Docs ↗</a>
+              <% } %>
+            </div>
+            <div class="card-body">
+              <p style="font-size: 0.9em; color: #aaa; margin-bottom: 1rem;"><%= sheet.description %></p>
+              
+              <% sheet.commands.forEach(cmd => { %>
+                <div class="cmd-row">
+                  <code class="cmd-signature"><%= cmd.signature %></code>
+                  <p class="cmd-desc"><%= cmd.description %></p>
+                  
+                  <% if (cmd.arguments) { %>
+                    <div class="arg-list">
+                      <% cmd.arguments.forEach(arg => { %>
+                        <div><span class="arg-name"><%= arg.name %></span>: <%= arg.description %></div>
+                      <% }) %>
+                    </div>
+                  <% } %>
+                </div>
+              <% }) %>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+    <% }) %>
+  </main>
+</body>
+</html>

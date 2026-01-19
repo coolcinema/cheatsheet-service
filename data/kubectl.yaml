@@ -1,0 +1,16 @@
+title: "Kubectl (Debug)"
+category: "Infrastructure"
+description: "Прямое управление кластером Kubernetes. Используйте для отладки."
+commands:
+  - signature: "kubectl get pods -n coolcinema"
+    description: "Показать список подов (приложений) и их статус."
+  - signature: "kubectl logs -n coolcinema -l app.kubernetes.io/name=<service> -f"
+    description: "Смотреть логи конкретного сервиса в реальном времени."
+    arguments:
+      - name: "service"
+        description: "Например: identity-service"
+  - signature: "kubectl rollout restart deployment <service> -n coolcinema"
+    description: "Перезапустить поды (полезно для скачивания нового образа latest)."
+  - signature: "kubectl port-forward svc/<service> -n coolcinema <local>:<remote>"
+    description: "Проброс порта к сервису для локального вызова."
+    example: "kubectl port-forward svc/identity-service -n coolcinema 8000:5000"

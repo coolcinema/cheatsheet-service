@@ -1,0 +1,9 @@
+title: "CoolCinema CLI"
+category: "Platform Tools"
+description: "Наш внутренний инструмент для автоматизации рутины."
+commands:
+  - signature: "pnpm exec coolcinema register"
+    description: "Зарегистрировать новый микросервис в системе."
+    arguments:
+      - name: "Interactive Mode"
+        description: "CLI спросит имя, порт и описание сервиса."

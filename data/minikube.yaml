@@ -1,0 +1,10 @@
+title: "Minikube"
+category: "Infrastructure"
+description: "Локальный Kubernetes кластер."
+commands:
+  - signature: "minikube start"
+    description: "Запуск кластера."
+  - signature: "minikube dashboard"
+    description: "Открыть визуальную панель управления состоянием кластера."
+  - signature: "minikube tunnel"
+    description: "Запустить туннель (нужно держать открытым для работы Ingress)."

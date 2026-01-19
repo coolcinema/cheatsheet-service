@@ -1,0 +1,9 @@
+title: "ArgoCD"
+category: "GitOps & Deploy"
+description: "Управление непрерывной доставкой (CD). Синхронизирует Git с Кластером."
+docUrl: "https://argo-cd.readthedocs.io/"
+commands:
+  - signature: "kubectl port-forward svc/argocd-server -n argocd 8080:443"
+    description: "Открыть веб-интерфейс (https://localhost:8080). Логин: admin."
+  - signature: "kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d; echo"
+    description: "Получить пароль администратора (генерируется при установке)."

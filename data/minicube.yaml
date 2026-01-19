@@ -1,0 +1,11 @@
+title: "Minikube"
+category: "Infrastructure"
+description: "Локальный Kubernetes кластер для разработки."
+commands:
+  - signature: "minikube start"
+    description: "Запуск кластера. Используйте драйвер docker для лучшей совместимости."
+    example: "minikube start --cpus 4 --memory 8192"
+  - signature: "minikube dashboard"
+    description: "Открыть веб-интерфейс управления кластером."
+  - signature: "minikube tunnel"
+    description: "Создает туннель для сервисов типа LoadBalancer (нужен для Ingress)."
