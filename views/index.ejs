@@ -7,91 +7,126 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
   <style>
     :root {
-      --pico-spacing: 0.5rem; /* Compact mode */
+      --pico-spacing: 0.75rem;
       --pico-font-size: 16px;
+      --pico-card-background-color: #1e1e1e;
     }
-    .container { max-width: 1400px; padding-top: 20px; }
-    .category-header { margin-top: 2rem; border-bottom: 1px solid #333; padding-bottom: 0.5rem; color: #81d4fa; }
+    body { background-color: #121212; }
+    .container { max-width: 900px; padding-top: 40px; padding-bottom: 60px; }
     
+    h1 { color: #81d4fa; margin-bottom: 0.5rem; }
+    h3.category-header { 
+      margin-top: 3rem; 
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem; 
+      border-bottom: 2px solid #333; 
+      color: #ffab40; /* Orange */
+      text-transform: uppercase;
+      font-size: 0.9em;
+      letter-spacing: 1px;
+    }
+
     .card { 
-      background: #1e1e1e; 
+      margin-bottom: 2rem; 
       border: 1px solid #333; 
       border-radius: 8px;
-      height: 100%;
+      overflow: hidden;
     }
     .card-header { 
       background: #252525; 
-      padding: 10px 15px; 
+      padding: 12px 20px; 
       border-bottom: 1px solid #333;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .card-body { padding: 15px; }
+    .card-header strong { font-size: 1.1em; color: #fff; }
+    .card-body { padding: 0 20px; }
     
+    .description { color: #aaa; margin: 15px 0; font-style: italic; }
+
     .cmd-row { 
-      margin-bottom: 15px; 
-      padding-bottom: 10px;
-      border-bottom: 1px dashed #333;
+      padding: 15px 0; 
+      border-top: 1px solid #333;
     }
-    .cmd-row:last-child { border-bottom: none; margin-bottom: 0; }
-    
+    .cmd-row:first-of-type { border-top: none; }
+
     .cmd-signature {
+      display: block;
       background: #000;
-      color: #a5d6a7; /* Bright Green */
-      padding: 8px 12px;
-      border-radius: 4px;
+      color: #a5d6a7; 
+      padding: 10px 15px;
+      border-radius: 6px;
       font-family: 'Courier New', monospace;
       font-weight: bold;
-      display: block;
-      margin-bottom: 5px;
       border: 1px solid #444;
+      white-space: pre-wrap;
+      word-break: break-all;
     }
-    .cmd-desc { font-size: 0.9em; color: #ccc; margin: 0; }
     
-    .arg-list { font-size: 0.85em; color: #888; margin-top: 4px; padding-left: 10px; border-left: 2px solid #444; }
-    .arg-name { color: #ce93d8; font-weight: bold; } /* Purple */
+    .cmd-meta { margin-top: 8px; margin-left: 5px; }
+    .cmd-desc { color: #ddd; margin-bottom: 4px; font-weight: 500; }
+    
+    .arg-list { 
+      font-size: 0.85em; 
+      color: #888; 
+      background: #1a1a1a;
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin-top: 6px;
+    }
+    .arg-name { color: #ce93d8; font-weight: bold; margin-right: 5px; }
   </style>
 </head>
 <body>
   <main class="container">
     <hgroup>
       <h1>📚 CoolCinema Cheatsheet</h1>
-      <p>Интерактивная справка по инструментам разработки</p>
+      <p>Справочник команд для разработки и деплоя</p>
     </hgroup>
 
     <% Object.keys(categories).forEach(category => { %>
       <h3 class="category-header"><%= category %></h3>
-      <div class="grid">
-        <% categories[category].forEach(sheet => { %>
-          <article class="card">
-            <div class="card-header">
-              <strong><%= sheet.title %></strong>
-              <% if(sheet.docUrl) { %>
-                <a href="<%= sheet.docUrl %>" target="_blank" role="button" class="outline contrast" style="padding: 2px 8px; font-size: 0.7em;">Docs ↗</a>
-              <% } %>
-            </div>
-            <div class="card-body">
-              <p style="font-size: 0.9em; color: #aaa; margin-bottom: 1rem;"><%= sheet.description %></p>
-              
-              <% sheet.commands.forEach(cmd => { %>
-                <div class="cmd-row">
-                  <code class="cmd-signature"><%= cmd.signature %></code>
-                  <p class="cmd-desc"><%= cmd.description %></p>
+      
+      <% categories[category].forEach(sheet => { %>
+        <article class="card">
+          <div class="card-header">
+            <strong><%= sheet.title %></strong>
+            <% if(sheet.docUrl) { %>
+              <a href="<%= sheet.docUrl %>" target="_blank" role="button" class="outline contrast" style="padding: 4px 12px; font-size: 0.8em;">Docs ↗</a>
+            <% } %>
+          </div>
+          <div class="card-body">
+            <% if (sheet.description) { %>
+              <p class="description"><%= sheet.description %></p>
+            <% } %>
+            
+            <% sheet.commands.forEach(cmd => { %>
+              <div class="cmd-row">
+                <code class="cmd-signature"><%= cmd.signature %></code>
+                <div class="cmd-meta">
+                  <div class="cmd-desc"><%= cmd.description %></div>
                   
                   <% if (cmd.arguments) { %>
                     <div class="arg-list">
                       <% cmd.arguments.forEach(arg => { %>
-                        <div><span class="arg-name"><%= arg.name %></span>: <%= arg.description %></div>
+                        <div><span class="arg-name"><%= arg.name %></span> <%= arg.description %></div>
                       <% }) %>
                     </div>
                   <% } %>
+
+                  <% if (cmd.example) { %>
+                    <div style="margin-top: 10px; background: #111; padding: 10px; border-radius: 4px; border: 1px solid #333;">
+                      <strong style="font-size: 0.8em; color: #888; display: block; margin-bottom: 5px;">EXAMPLE / CODE:</strong>
+                      <pre style="margin: 0; background: transparent; padding: 0; color: #e0e0e0; font-size: 0.85em;"><code><%= cmd.example %></code></pre>
+                    </div>
+                  <% } %>
                 </div>
-              <% }) %>
-            </div>
-          </article>
-        <% }) %>
-      </div>
+              </div>
+            <% }) %>
+          </div>
+        </article>
+      <% }) %>
     <% }) %>
   </main>
 </body>

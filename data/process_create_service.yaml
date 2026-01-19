@@ -1,0 +1,44 @@
+title: "Create Service (Создание сервиса)"
+category: "Workflows"
+description: "Алгоритм создания нового микросервиса с нуля до деплоя (Hello World)."
+commands:
+  - signature: "export SERVICE_NAME=\"booking-service\" && mkdir $SERVICE_NAME && cd $SERVICE_NAME"
+    description: "1. Создание папки."
+  - signature: "git init && gh repo create coolcinema/$SERVICE_NAME --public --source=. --remote=origin"
+    description: "2. Инициализация Git и создание репозитория."
+  - signature: "pnpm init && echo \"@coolcinema:registry=https://npm.pkg.github.com\" > .npmrc && echo \"//npm.pkg.github.com/:_authToken=${COOLCINEMA_GH_PKG_TOKEN}\" >> .npmrc"
+    description: "3. Настройка Node.js и доступа к реестру."
+  - signature: "echo \"const http = require('http'); http.createServer((req, res) => { res.end('Hello from ' + process.env.npm_package_name) }).listen(5000);\" > index.js"
+    description: "4. Минимальный код (Hello World). Слушает порт 5000."
+  
+  - signature: "Dockerfile"
+    description: "5. Создайте файл Dockerfile:"
+    example: |
+      FROM node:20-alpine
+      WORKDIR /app
+      COPY package.json .npmrc ./ 
+      RUN --mount=type=secret,id=npm_token export COOLCINEMA_GH_PKG_TOKEN=$(cat /run/secrets/npm_token) && pnpm install
+      COPY . .
+      CMD ["node", "index.js"]
+
+  - signature: ".github/workflows/docker.yml"
+    description: "6. Создайте CI пайплайн (mkdir -p .github/workflows):"
+    example: |
+      name: Build
+      on: [push]
+      env: { REGISTRY: ghcr.io, IMAGE_NAME: ${{ github.repository }} }
+      jobs:
+        build:
+          runs-on: ubuntu-latest
+          permissions: { contents: read, packages: write }
+          steps:
+            - uses: actions/checkout@v4
+            - uses: docker/login-action@v3
+              with: { registry: ${{ env.REGISTRY }}, username: ${{ github.actor }}, password: ${{ secrets.CI_PAT }} }
+            - uses: docker/build-push-action@v5
+              with: { context: ., push: true, tags: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest", secrets: "npm_token=${{ secrets.CI_PAT }}" }
+
+  - signature: "pnpm add -D @coolcinema/cli && pnpm exec coolcinema register"
+    description: "7. Регистрация в ArgoCD. Введите имя, slug и порт 5000."
+  - signature: "git add . && git commit -m \"feat: init\" && git push -u origin main"
+    description: "8. Деплой. Через 2-3 минуты сервис появится в кластере."
