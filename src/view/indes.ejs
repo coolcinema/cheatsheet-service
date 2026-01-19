@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CoolCinema Cheatsheet</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+  <style>
+    .command-code { background: #f0f0f0; color: #d81b60; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+    .arg-table { font-size: 0.9em; margin-top: 10px; margin-bottom: 10px; }
+    .card { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>📚 CoolCinema Developer Cheatsheet</h1>
+    <p>Все команды для управления инфраструктурой в одном месте.</p>
+
+    <% Object.keys(categories).forEach(category => { %>
+      <h2><%= category %></h2>
+      <div class="grid">
+        <% categories[category].forEach(sheet => { %>
+          <article class="card">
+            <header>
+              <strong><%= sheet.title %></strong>
+              <% if(sheet.docUrl) { %>
+                <a href="<%= sheet.docUrl %>" target="_blank" style="float:right; font-size: 0.8em">Docs ↗</a>
+              <% } %>
+            </header>
+            <p><small><%= sheet.description %></small></p>
+            
+            <% sheet.commands.forEach(cmd => { %>
+              <details>
+                <summary><code><%= cmd.signature %></code></summary>
+                <p><%= cmd.description %></p>
+                
+                <% if (cmd.arguments) { %>
+                  <table class="arg-table">
+                    <thead><tr><th>Arg</th><th>Desc</th></tr></thead>
+                    <tbody>
+                      <% cmd.arguments.forEach(arg => { %>
+                        <tr><td><code><%= arg.name %></code></td><td><%= arg.description %></td></tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                <% } %>
+
+                <% if (cmd.example) { %>
+                  <strong>Example:</strong>
+                  <pre><code><%= cmd.example %></code></pre>
+                <% } %>
+              </details>
+            <% }) %>
+          </article>
+        <% }) %>
+      </div>
+      <hr>
+    <% }) %>
+  </main>
+</body>
+</html>
