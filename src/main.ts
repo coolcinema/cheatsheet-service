@@ -8,10 +8,14 @@ import { glob } from "glob";
 
 const server = Fastify({ logger: true });
 
+// Определяем корень (в проде мы в dist, в деве в src)
+const isProd = __dirname.endsWith("dist");
+const rootDir = isProd ? __dirname : path.join(__dirname, "..");
+
 // Подключаем шаблонизатор
 server.register(view, {
   engine: { ejs },
-  root: path.join(__dirname, "../views"),
+  root: path.join(rootDir, "views"),
 });
 
 // Интерфейс данных
@@ -30,7 +34,7 @@ interface CheatSheet {
 
 // Загрузка данных
 const loadData = async (): Promise<CheatSheet[]> => {
-  const files = await glob("data/*.yaml");
+  const files = await glob(path.join(rootDir, "data/*.yaml"));
   return files.map((file) => {
     const content = fs.readFileSync(file, "utf8");
     return yaml.load(content) as CheatSheet;
@@ -55,6 +59,7 @@ server.get("/", async (req, reply) => {
 
 const start = async () => {
   try {
+    // Порт 5000 - стандарт для наших микросервисов
     await server.listen({ port: 5000, host: "0.0.0.0" });
   } catch (err) {
     server.log.error(err);
