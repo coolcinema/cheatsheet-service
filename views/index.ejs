@@ -1,133 +1,221 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CoolCinema Cheatsheet</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
   <style>
+    /* Reset & Variables */
     :root {
-      --pico-spacing: 0.75rem;
-      --pico-font-size: 16px;
-      --pico-card-background-color: #1e1e1e;
+      --bg: #0f1115;
+      --card-bg: #161b22;
+      --border: #30363d;
+      --text: #c9d1d9;
+      --text-dim: #8b949e;
+      --accent: #58a6ff;
+      --code-bg: #0d1117;
+      --green: #238636;
     }
-    body { background-color: #121212; }
-    .container { max-width: 900px; padding-top: 40px; padding-bottom: 60px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     
-    h1 { color: #81d4fa; margin-bottom: 0.5rem; }
-    h3.category-header { 
-      margin-top: 3rem; 
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem; 
-      border-bottom: 2px solid #333; 
-      color: #ffab40; /* Orange */
-      text-transform: uppercase;
-      font-size: 0.9em;
-      letter-spacing: 1px;
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      padding: 40px 20px;
     }
 
-    .card { 
-      margin-bottom: 2rem; 
-      border: 1px solid #333; 
-      border-radius: 8px;
-      overflow: hidden;
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
     }
-    .card-header { 
-      background: #252525; 
-      padding: 12px 20px; 
-      border-bottom: 1px solid #333;
+
+    /* Typography */
+    h1 { margin-bottom: 10px; color: #fff; }
+    p.subtitle { color: var(--text-dim); margin-bottom: 40px; font-size: 1.1em; }
+    
+    h2.category {
+      color: var(--accent);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+      margin-top: 50px;
+      margin-bottom: 20px;
+      font-size: 1.5em;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-    .card-header strong { font-size: 1.1em; color: #fff; }
-    .card-body { padding: 0 20px; }
-    
-    .description { color: #aaa; margin: 15px 0; font-style: italic; }
-
-    .cmd-row { 
-      padding: 15px 0; 
-      border-top: 1px solid #333;
-    }
-    .cmd-row:first-of-type { border-top: none; }
-
-    .cmd-signature {
-      display: block;
-      background: #000;
-      color: #a5d6a7; 
-      padding: 10px 15px;
-      border-radius: 6px;
-      font-family: 'Courier New', monospace;
-      font-weight: bold;
-      border: 1px solid #444;
-      white-space: pre-wrap;
-      word-break: break-all;
+      background: #21262d;
     }
     
-    .cmd-meta { margin-top: 8px; margin-left: 5px; }
-    .cmd-desc { color: #ddd; margin-bottom: 4px; font-weight: 500; }
+    .card-header h3 { font-size: 1.1em; margin: 0; color: #fff; }
     
-    .arg-list { 
-      font-size: 0.85em; 
-      color: #888; 
-      background: #1a1a1a;
-      padding: 8px 12px;
+    .doc-link {
+      font-size: 0.85em;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 4px 10px;
       border-radius: 4px;
-      margin-top: 6px;
+      transition: background 0.2s;
     }
-    .arg-name { color: #ce93d8; font-weight: bold; margin-right: 5px; }
+    .doc-link:hover { background: var(--border); }
+
+    .card-content { padding: 0 20px; }
+    .card-desc { padding: 15px 0; color: var(--text-dim); font-style: italic; border-bottom: 1px solid var(--border); }
+
+    /* Command Item */
+    .cmd-item { padding: 25px 0; border-bottom: 1px solid var(--border); }
+    .cmd-item:last-child { border-bottom: none; }
+
+    .cmd-title { 
+      margin-bottom: 10px; 
+      font-weight: 500; 
+      color: #fff;
+    }
+
+    /* Code Block (Crucial Part) */
+    .code-box {
+      display: flex; /* Flexbox layout */
+      justify-content: space-between;
+      align-items: flex-start;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      position: relative;
+    }
+
+    code {
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 14px;
+      color: #a5d6a7;
+      white-space: pre-wrap; /* Wrap long lines */
+      word-break: break-all; /* Break long words if needed */
+      flex-grow: 1; /* Take all available space */
+      margin-right: 15px; /* Space before button */
+    }
+
+    .copy-btn {
+      flex-shrink: 0; /* Do NOT shrink */
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: bold;
+      cursor: pointer;
+      width: auto;
+      min-width: 60px; /* Fixed minimal width */
+      text-align: center;
+    }
+    .copy-btn:hover { border-color: var(--text); color: #fff; }
+
+    /* Meta Info */
+    .meta { margin-top: 10px; font-size: 0.9em; }
+    .arg { display: block; color: var(--text-dim); margin-top: 4px; }
+    .arg span { color: #d2a8ff; font-family: monospace; font-weight: bold; }
+    
+    .example-label { display: block; margin-top: 15px; margin-bottom: 5px; font-size: 0.75em; text-transform: uppercase; color: var(--text-dim); letter-spacing: 1px; }
+    .example-code { color: #fff; }
   </style>
 </head>
 <body>
-  <main class="container">
-    <hgroup>
-      <h1>📚 CoolCinema Cheatsheet</h1>
-      <p>Справочник команд для разработки и деплоя</p>
-    </hgroup>
 
-    <% Object.keys(categories).forEach(category => { %>
-      <h3 class="category-header"><%= category %></h3>
-      
-      <% categories[category].forEach(sheet => { %>
-        <article class="card">
-          <div class="card-header">
-            <strong><%= sheet.title %></strong>
-            <% if(sheet.docUrl) { %>
-              <a href="<%= sheet.docUrl %>" target="_blank" role="button" class="outline contrast" style="padding: 4px 12px; font-size: 0.8em;">Docs ↗</a>
-            <% } %>
-          </div>
-          <div class="card-body">
-            <% if (sheet.description) { %>
-              <p class="description"><%= sheet.description %></p>
-            <% } %>
-            
-            <% sheet.commands.forEach(cmd => { %>
-              <div class="cmd-row">
-                <code class="cmd-signature"><%= cmd.signature %></code>
-                <div class="cmd-meta">
-                  <div class="cmd-desc"><%= cmd.description %></div>
-                  
-                  <% if (cmd.arguments) { %>
-                    <div class="arg-list">
-                      <% cmd.arguments.forEach(arg => { %>
-                        <div><span class="arg-name"><%= arg.name %></span> <%= arg.description %></div>
-                      <% }) %>
-                    </div>
-                  <% } %>
+<div class="container">
+  <h1>📚 CoolCinema Cheatsheet</h1>
+  <p class="subtitle">Интерактивная справка по инструментам разработки</p>
 
-                  <% if (cmd.example) { %>
-                    <div style="margin-top: 10px; background: #111; padding: 10px; border-radius: 4px; border: 1px solid #333;">
-                      <strong style="font-size: 0.8em; color: #888; display: block; margin-bottom: 5px;">EXAMPLE / CODE:</strong>
-                      <pre style="margin: 0; background: transparent; padding: 0; color: #e0e0e0; font-size: 0.85em;"><code><%= cmd.example %></code></pre>
-                    </div>
-                  <% } %>
-                </div>
+  <% Object.keys(categories).forEach(category => { %>
+    <h2 class="category"><%= category %></h2>
+    
+    <% categories[category].forEach(sheet => { %>
+      <div class="card">
+        <div class="card-header">
+          <h3><%= sheet.title %></h3>
+          <% if(sheet.docUrl) { %>
+            <a href="<%= sheet.docUrl %>" target="_blank" class="doc-link">Docs ↗</a>
+          <% } %>
+        </div>
+        
+        <div class="card-content">
+          <% if (sheet.description) { %>
+            <div class="card-desc"><%= sheet.description %></div>
+          <% } %>
+
+          <% sheet.commands.forEach(cmd => { %>
+            <div class="cmd-item">
+              <!-- Description -->
+              <div class="cmd-title"><%= cmd.description %></div>
+
+              <!-- Main Command -->
+              <div class="code-box">
+                <code><%= cmd.signature %></code>
+                <button class="copy-btn" onclick="copy(this, `<%= cmd.signature.replace(/`/g, '\`').replace(/\$/g, '\\$') %>`)">COPY</button>
               </div>
-            <% }) %>
-          </div>
-        </article>
-      <% }) %>
-    <% }) %>
-  </main>
+
+              <!-- Arguments -->
+              <% if (cmd.arguments) { %>
+                <div class="meta">
+                  <% cmd.arguments.forEach(arg => { %>
+                    <span class="arg"><span><%= arg.name %></span> – <%= arg.description %></span>
+                  <% })
+                  %>
+                </div>
+              <% }
+              %>
+
+              <!-- Example -->
+              <% if (cmd.example) { %>
+                <span class="example-label">Example</span>
+                <div class="code-box">
+                  <code class="example-code"><%= cmd.example %></code>
+                  <button class="copy-btn" onclick="copy(this, `<%= cmd.example.replace(/`/g, '\`').replace(/\$/g, '\\$') %>`)">COPY</button>
+                </div>
+              <% }
+              %>
+            </div>
+          <% })
+          %>
+        </div>
+      </div>
+    <% })
+    %>
+  <% })
+  %>
+</div>
+
+<script>
+  function copy(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const original = btn.innerText;
+      btn.innerText = "OK";
+      btn.style.borderColor = "#238636";
+      btn.style.color = "#238636";
+      setTimeout(() => {
+        btn.innerText = original;
+        btn.style.borderColor = "";
+        btn.style.color = "";
+      }, 1500);
+    });
+  }
+</script>
+
 </body>
 </html>
+

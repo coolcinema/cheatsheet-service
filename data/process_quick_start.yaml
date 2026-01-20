@@ -10,5 +10,12 @@ commands:
     description: "Шаг 3. Установка ArgoCD (контроллер деплоя)."
   - signature: "kubectl apply -f project/infra-k8s/bootstrap/appset.yaml"
     description: "Шаг 4. Запуск приложений. ArgoCD начнет разворачивать сервисы."
+  
   - signature: "telepresence connect"
-    description: "Шаг 5. Подключение к сети кластера для работы."
+    description: "Шаг 5. Подключение к сети. Теперь сервисы доступны по их именам."
+    example: |
+      # Основной способ (DNS):
+      curl http://cheatsheet-service.coolcinema:5000
+      
+      # Альтернатива (если DNS не работает):
+      kubectl port-forward svc/cheatsheet-service 8080:5000
