@@ -1,21 +1,31 @@
 title: "Quick Start (Запуск проекта)"
 category: "Onboarding"
-description: "Пошаговый алгоритм развертывания локального окружения для нового разработчика."
+description: "Пошаговый алгоритм развертывания локального окружения."
 commands:
   - signature: "minikube start --cpus 4 --memory 8192 --driver=docker"
-    description: "Шаг 1. Запуск кластера. Выделите достаточно ресурсов."
-  - signature: "kubectl create namespace coolcinema && kubectl config set-context --current --namespace=coolcinema"
-    description: "Шаг 2. Настройка пространства имен."
-  - signature: "kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml"
-    description: "Шаг 3. Установка ArgoCD (контроллер деплоя)."
-  - signature: "kubectl apply -f project/infra-k8s/bootstrap/appset.yaml"
-    description: "Шаг 4. Запуск приложений. ArgoCD начнет разворачивать сервисы."
+    description: "1. Запуск кластера. Выделите достаточно ресурсов."
   
+  - signature: "minikube addons enable ingress"
+    description: "2. Включение Ingress контроллера (если не включен)."
+
+  - signature: "sudo sh -c 'echo \"$(minikube ip) argo.coolcinema.local jaeger.coolcinema.local cheatsheet.coolcinema.local\" >> /etc/hosts'"
+    description: "3. Настройка DNS. Пропишите IP миникуба для наших доменов."
+    example: "Проверьте: ping argo.coolcinema.local"
+
+  - signature: "minikube tunnel"
+    description: "4. (Опционально) Запуск туннеля. Требуется на Mac/Windows или если Ingress не получает IP."
+
+  - signature: "kubectl create namespace coolcinema && kubectl config set-context --current --namespace=coolcinema"
+    description: "5. Настройка пространства имен."
+
+  - signature: "kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml"
+    description: "6. Установка ArgoCD."
+
+  - signature: "kubectl apply -f project/infra-k8s/bootstrap/appset.yaml && kubectl apply -f project/infra-k8s/bootstrap/ingress.yaml"
+    description: "7. Запуск приложений и Ingress."
+
   - signature: "telepresence connect"
-    description: "Шаг 5. Подключение к сети. Теперь сервисы доступны по их именам."
-    example: |
-      # Основной способ (DNS):
-      curl http://cheatsheet-service.coolcinema:5000
-      
-      # Альтернатива (если DNS не работает):
-      kubectl port-forward svc/cheatsheet-service 8080:5000
+    description: "8. Подключение к сети кластера (для доступа к внутренним сервисам по :порт)."
+
+  - signature: "Open: http://cheatsheet.coolcinema.local"
+    description: "9. Готово! Вся документация доступна здесь."

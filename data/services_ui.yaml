@@ -1,0 +1,10 @@
+title: "Dashboards (Web UI)"
+category: "Infrastructure"
+description: "Веб-интерфейсы инфраструктурных сервисов (требует Ingress и записи в /etc/hosts)."
+commands:
+  - signature: "https://argo.coolcinema.local"
+    description: "ArgoCD. Управление деплоями. (admin / пароль в секрете)"
+  - signature: "http://jaeger.coolcinema.local"
+    description: "Jaeger UI. Просмотр трейсов и логов."
+  - signature: "http://cheatsheet.coolcinema.local"
+    description: "Documentation. Эта страница."
