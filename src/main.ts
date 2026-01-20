@@ -8,9 +8,9 @@ import { glob } from "glob";
 
 const server = Fastify({ logger: true });
 
-// Определяем корень (в проде мы в dist, в деве в src)
-const isProd = __dirname.endsWith("dist");
-const rootDir = isProd ? __dirname : path.join(__dirname, "..");
+// Используем process.cwd(), так как мы всегда запускаем сервис из корня
+// (и в dev, и в docker).
+const rootDir = process.cwd();
 
 // Подключаем шаблонизатор
 server.register(view, {
