@@ -1,0 +1,10 @@
+version: 1.0.0
+metadata:
+  name: CheatsheetService
+  slug: cheatsheet-service
+  description: Service description
+
+ingress:
+  web:
+    port: 5000
+    host: cheatsheet.coolcinema.local

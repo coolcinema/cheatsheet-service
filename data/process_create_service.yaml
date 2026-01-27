@@ -6,7 +6,7 @@ commands:
     description: "1. Создание папки."
   - signature: "git init && gh repo create coolcinema/$SERVICE_NAME --public --source=. --remote=origin"
     description: "2. Инициализация Git и создание репозитория."
-  - signature: "pnpm init && echo \"@coolcinema:registry=https://npm.pkg.github.com\" > .npmrc && echo \"//npm.pkg.github.com/:_authToken=${COOLCINEMA_GH_PKG_TOKEN}\" >> .npmrc"
+  - signature: "pnpm init && echo \"@coolcinema:registry=https://npm.pkg.github.com\" > .npmrc && echo \"//npm.pkg.github.com/:_authToken=$COOLCINEMA_GH_PKG_TOKEN\" >> .npmrc"
     description: "3. Настройка Node.js и доступа к реестру."
   - signature: "echo \"const http = require('http'); http.createServer((req, res) => { res.end('Hello from ' + process.env.npm_package_name) }).listen(5000);\" > index.js"
     description: "4. Минимальный код (Hello World). Слушает порт 5000."
@@ -38,7 +38,9 @@ commands:
             - uses: docker/build-push-action@v5
               with: { context: ., push: true, tags: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest", secrets: "npm_token=${{ secrets.CI_PAT }}" }
 
-  - signature: "pnpm add -D @coolcinema/cli && pnpm exec coolcinema register"
-    description: "7. Регистрация в ArgoCD. Введите имя, slug и порт 5000."
+  - signature: "pnpm add -D @coolcinema/cli && pnpm exec coolcinema init"
+    description: "7. Инициализация. Создаст coolcinema.yaml. Добавьте секцию 'ingress' для доступа (порт 5000)."
+  - signature: "pnpm exec coolcinema push"
+    description: "8. Регистрация. Отправляет конфиг в платформу."
   - signature: "git add . && git commit -m \"feat: init\" && git push -u origin main"
-    description: "8. Деплой. Через 2-3 минуты сервис появится в кластере."
+    description: "9. Деплой. Через пару минут сервис станет доступен по адресу http://booking-service.coolcinema.local."
