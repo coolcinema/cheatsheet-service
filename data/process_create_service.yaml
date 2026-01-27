@@ -3,7 +3,7 @@ category: "Workflows"
 description: "Алгоритм создания нового микросервиса с нуля до деплоя (Hello World)."
 commands:
   - signature: 'export SERVICE_NAME="booking-service" && mkdir $SERVICE_NAME && cd $SERVICE_NAME'
-    description: "=!=1. Создание папки."
+    description: "1. Создание папки."
   - signature: "git init && gh repo create coolcinema/$SERVICE_NAME --public --source=. --remote=origin"
     description: "2. Инициализация Git и создание репозитория."
   - signature: 'pnpm init && echo "@coolcinema:registry=https://npm.pkg.github.com" > .npmrc && echo "//npm.pkg.github.com/:_authToken=$COOLCINEMA_GH_PKG_TOKEN" >> .npmrc'
